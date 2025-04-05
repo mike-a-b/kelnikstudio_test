@@ -23,7 +23,7 @@ class ArticleFactory extends Factory
             'author' => $faker->firstName() . ' '
                 . $faker->lastName(),
             'brief' => $faker->sentence(15),
-            'fulltext' => $faker->paragraph,
+            'fulltext' => $faker->paragraph(20),
             'published_at' => $faker->dateTimeBetween('-1 year', 'now'),
         ];
     }

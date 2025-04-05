@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
-use Illuminate\Http\Request;
+use App\Services\ArticleService;
 
 class ArticleController extends Controller
 {
+    protected ArticleService $articleService;
+
+    public function __construct(ArticleService $articleService)
+    {
+        $this->articleService = $articleService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $articles = Article::all();
+        $articles = $this->articleService->getAllArticles();
         return view('index', compact('articles'));
     }
 
@@ -21,46 +29,26 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['published_at'] = date('Y-m-d H:i:s');
+        $this->articleService->createArticle($validated);
+        return back()->with('success', 'Статья успешно добавлена');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Article $article)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Article $article)
-    {
-        //
+        $article = $this->articleService->getArticleById($id);
+        return view('show', compact('article'));
     }
 }

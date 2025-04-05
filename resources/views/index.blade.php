@@ -24,27 +24,30 @@
                         </div>
 
                     </div>
+                    <hr>
                     @foreach($articles as $article)
-                        <div class="flex items-center border-black ">
+                        <div class="flex items-center border-black p-2 ">
                             <div class="block mt-1 w-full text-xl font-semibold text-gray-800">
                                 {{ $article->title }}
                             </div>
                             <div class="block mt-1 w-full">
                                 {{ $article->brief }}
                             </div>
-                            <div class="block mt-1 w-full">
+                            <div class="block mt-1 w-full px-2">
                                 {{ $article->author }}
                             </div>
                             <div class="flex items-center justify-end mt-4">
                                 <form action="{{route('show', $article)}}" method="GET">
-                                    @csrf
                                     <x-primary-button class="ms-4">
                                         {{ __('Смотреть статью') }}
                                     </x-primary-button>
                                 </form>
                             </div>
                         </div>
+                        <hr>
                     @endforeach
+                    <!-- Вывод ссылок пагинации -->
+                    {{ $articles->links() }}
                 </div>
             </div>
         </div>
